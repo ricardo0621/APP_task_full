@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
-// para que lea el archivo .env la variable de entorno
+// para que lea el archivo .env la variable de entorno secret_key
 dotenv.config();
 
 function validateToken(req, res, next) {

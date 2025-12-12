@@ -30,8 +30,8 @@ async function updateUser(id, body) {
         data: {
             name: body.name,
             email: body.email,
+            rol: body.rol,
             password: await passwordEncrypt(body.password),
-            rol: body.rol
         }
     });
     return data;
@@ -44,31 +44,25 @@ async function deleteUser(id) {
     return data;
 }
 
-const login = async (email, password) => {
-    const query = await prisma.user.findUnique({
+async function login(body) {
+    const data = await prisma.user.findUnique({
         where: {
-            email
+            email: body.email
         }
     });
-    if (!query) {
-        return ('Usuario no encontrado');
+    if (data) {
+        const passwordValida = await passwordCompare(body.password, data.password);
+         if (passwordValida) {
+            data.password = "";
+            const token = jwt.sign(data,process.env.SECRET_KEY,{expiresIn: '1h'});
+            return {message: "inicio de sesio exitoso", data:token};
+         }
+         return {message: "Password incorrecta", data: null};
     }
-    const passwordValida = await passwordCompare(password, query.password);
-    if (!passwordValida) {
-        return ('Password incorrecta');
-    }
+    return {message: "Usuario no encontrado", data:data};
 
-    const token = jwt.sign(
-        {
-            id: query.id,
-            email: query.email
-        },
-        process.env.SECRET_KEY,
-        { expiresIn: '5h' }
-    );
-
-    return { token: token };
-};
+    
+}
 
 async function logout() { }
 
