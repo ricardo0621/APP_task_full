@@ -1,0 +1,1 @@
+// estado global de la app
