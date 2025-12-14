@@ -24,11 +24,13 @@ export default function Login() {
     return (
         <Container>
             <Box sx={BoxStyle}>
-                <Typography variant="h4">Inicio de sesión</Typography>
+                <Typography color="primary" variant="h4">Inicio de sesión</Typography>
                 <Box sx={{ mt: 2 }}>
                     <TextField label="Email" name="email" variant="outlined" fullWidth margin="normal" />
                     <TextField label="Password" name="password" type='password' variant="outlined" fullWidth margin="normal" />
-                    <Button variant="contained" color="primary" type='submit'>{loading? "Cargando..." : "Iniciar sesión"}</Button>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                        <Button variant="contained" color="primary" type='submit'>{loading ? "Cargando..." : "Iniciar sesión"}</Button>
+                    </Box>
                 </Box>
             </Box>
         </Container>
